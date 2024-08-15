@@ -7,7 +7,7 @@ const login = async (req, res) => {
   try {
     const { DS_USUARIO, SENHA_USUARIO } = req.body;
 
-    let queryValidUser = /*SQL*/ `SELECT * FROM dim_usuario WHERE DS_USUARIO = '${DS_USUARIO}'`;
+    let queryValidUser = /*SQL*/ `SELECT * FROM dim_usuario WHERE EMAIL_USUARIO = '${DS_USUARIO}' || DS_USUARIO = '${DS_USUARIO}'`;
     const responseValidUser = await DAO.select(queryValidUser);
 
     if (!responseValidUser.body[0]) {
@@ -66,8 +66,7 @@ const tokenValidate = async (req, res, next) => {
 
   try {
     const decoded = jwt_decode.verify(token, process.env.SECRET);
-    req.user = decoded;
-    return res.status(201).json();
+    return res.status(201).json(decoded);
   } catch (error) {
     console.error(error);
     return res.status(401).json({ message: 'Token inválido' });

@@ -17,6 +17,12 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        container: 'calc(100vh - 60px)',
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -26,15 +32,15 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          100: '#d8e0e4',
-          200: '#b1c0c9',
-          300: '#8aa1af',
-          400: '#638194',
-          500: '#3c6279',
-          600: '#304e61',
-          700: '#243b49',
-          800: '#182730',
-          900: '#0c1418',
+          100: '#d3e0fb',
+          200: '#a8c1f7',
+          300: '#7ca1f3',
+          400: '#5182ef',
+          500: '#2563eb',
+          600: '#1e4fbc',
+          700: '#163b8d',
+          800: '#0f285e',
+          900: '#07142f',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',

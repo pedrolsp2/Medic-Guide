@@ -19,15 +19,3 @@ export const getInitials = (name: string) => {
 
   return nameArray.length > 1 ? `${firstName[0]}${lastName[0]}` : firstName[0];
 };
-
-export const formatTipo = (tipo: string) => {
-  const filtro = tipo.split('|');
-  switch (Number(filtro[0])) {
-    case 1:
-      return 'Manutenção';
-    case 2:
-      return 'Predial';
-    default:
-      return 'Facilities';
-  }
-};

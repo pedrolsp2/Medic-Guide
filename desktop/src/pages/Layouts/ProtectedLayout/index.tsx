@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useStore } from '@/store';
 import { getItem } from '@/utils/storage';
+import Header from '@/components/Header';
 
 const ProtectedLayout = () => {
   console.count('ProtectedLayout');
@@ -14,11 +15,10 @@ const ProtectedLayout = () => {
   }
 
   return (
-    <>
-      <div className="w-full h-screen overflow-y-auto">
-        <Outlet />
-      </div>
-    </>
+    <div className="w-full h-screen overflow-y-auto">
+      <Header />
+      <Outlet />
+    </div>
   );
 };
 

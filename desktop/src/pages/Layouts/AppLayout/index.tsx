@@ -19,11 +19,10 @@ const AppLayout = () => {
     mutationFn: validateUserToken,
     onSuccess: (data) => {
       const token = getItem(localStorage, 'token');
-
       if (token) {
         login({
           token: token,
-          usuario: data.token.NM_USUARIO,
+          usuario: data.NM_USUARIO,
         });
       }
     },

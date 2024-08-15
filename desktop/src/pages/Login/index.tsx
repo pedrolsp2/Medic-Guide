@@ -1,13 +1,20 @@
 import { FormEvent, useEffect, useRef } from 'react';
 import { useState } from 'react';
-import { Eye, EyeOff, KeyRound, Loader, UserCircle2 } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  KeyRound,
+  Loader,
+  Stethoscope,
+  UserCircle2,
+} from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { useMutation } from '@tanstack/react-query';
 import { authenticateUser } from '@/api/auth/user';
-import { toast } from 'sonner';
 import { AxiosError, isAxiosError } from 'axios';
 import { Button } from '@/components/ui/button';
+import ToastAlert from '@/components/ToastAlert';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -39,12 +46,15 @@ const Login = () => {
   } = useMutation({
     mutationFn: authenticateAsync,
     onSuccess: (data) => {
-      login({ token: data.token, usuario: data.nomeUsuario });
+      login({ token: data.token, usuario: data.usuario.NM_USUARIO });
       navigate(state?.path || '/');
     },
     onError: (err: AxiosError) => {
       if (isAxiosError<{ message: string }>(err)) {
-        toast.error('Usuário ou senha incorretos.');
+        ToastAlert({
+          content: 'Usuário ou senha incorretos.',
+          type: 'warning',
+        });
       }
     },
   });
@@ -68,6 +78,9 @@ const Login = () => {
         className="flex w-full flex-col gap-4 p-6 rounded border-primary-50/50 sm:w-[452px] border"
         onSubmit={onFormSubmit}
       >
+        <div className="flex items-center justify-center w-full gap-2 p-2">
+          <Stethoscope className="text-primary-500" /> Medic Guide
+        </div>
         <div
           className={`w-full rounded flex items-center border-b-2 py-1 bg-[#fafafa] px-2 ${
             focusInputUser && 'border-b-primary-500'

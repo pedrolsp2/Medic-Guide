@@ -1,19 +1,24 @@
 import instance from '..';
 import { getHeaders } from '@/api/utils';
 interface AuthenticateResponse {
-  nomeUsuario: string;
-  token: string;
-}
-
-interface ValidateResponse {
-  token: {
+  status: number;
+  message: string;
+  usuario: {
     SK_USUARIO: number;
     NM_USUARIO: string;
     EMAIL_USUARIO: string;
     DS_USUARIO: string;
-    iat: number;
-    exp: number;
   };
+  token: string;
+}
+
+interface ValidateResponse {
+  SK_USUARIO: number;
+  NM_USUARIO: string;
+  EMAIL_USUARIO: string;
+  DS_USUARIO: string;
+  iat: number;
+  exp: number;
 }
 
 export const authenticateUser = async (user: string, password: string) => {
