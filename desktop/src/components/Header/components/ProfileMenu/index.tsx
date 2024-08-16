@@ -21,7 +21,9 @@ const Profile: React.FC = () => {
   return (
     <div className="flex items-center gap-1">
       <Avatar>
-        <AvatarFallback>{getInitials(name || '')}</AvatarFallback>
+        <AvatarFallback className="font-semibold bg-white text-primary-500">
+          {getInitials(name || '')}
+        </AvatarFallback>
       </Avatar>
       <span className="text-white">{name}</span>
     </div>
