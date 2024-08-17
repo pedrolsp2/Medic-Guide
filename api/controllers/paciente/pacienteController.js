@@ -30,7 +30,15 @@ async function novoPaciente(req, res) {
     return res.status(512).json({ error: 'Erro ao criar usuário.' });
   }
 }
+async function buscaPaciente(req, res) {
+  const query = `SELECT * FROM pacientes WHERE deletado IS NULL`;
+  const response = await DAO.select(query);
+  return response.status === 200
+    ? res.status(200).json(response.body)
+    : res.status(500).json({ error: 'Erro ao buscar paciente.' });
+}
 
 module.exports = {
   novoPaciente,
+  buscaPaciente,
 };

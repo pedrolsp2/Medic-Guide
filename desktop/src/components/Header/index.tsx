@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between w-full p-2 bg-primary-500 h-14">
+    <div className="sticky top-0 flex items-center justify-between w-full p-2 bg-primary-500 h-14">
       <div className="flex items-center gap-1 text-white">
         <Sidenav />
         <button

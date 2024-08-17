@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
@@ -17,40 +18,48 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+type SelectData = { label: string; value: string };
 
-export function Select() {
+interface SelectProps {
+  data: SelectData[];
+  setState: React.Dispatch<React.SetStateAction<string[]>>;
+  id: string;
+}
+
+export function Select({ data, setState, id }: SelectProps) {
   const [open, setOpen] = React.useState(false);
   const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
 
   const handleSelect = (currentValue: string) => {
     setSelectedValues((prevValues) => {
+      let updatedValues;
       if (prevValues.includes(currentValue)) {
-        return prevValues.filter((value) => value !== currentValue);
+        updatedValues = prevValues.filter((value) => value !== currentValue);
       } else {
-        return [...prevValues, currentValue];
+        updatedValues = [...prevValues, currentValue];
       }
+
+      //@ts-ignore
+      setState((prevState) => {
+        const existingEntryIndex = prevState.findIndex(
+          //@ts-ignore
+          (entry) => entry.id === id
+        );
+
+        if (existingEntryIndex !== -1) {
+          const updatedState = [...prevState];
+          //@ts-ignore
+          updatedState[existingEntryIndex] = {
+            id: id,
+            sintomas: updatedValues,
+          };
+          return updatedState;
+        } else {
+          return [...prevState, { id: id, sintomas: updatedValues }];
+        }
+      });
+
+      return updatedValues;
     });
   };
 
@@ -63,39 +72,39 @@ export function Select() {
           aria-expanded={open}
           className="justify-between"
         >
-          {selectedValues.length > 0
-            ? selectedValues
-                .map(
-                  (value) =>
-                    frameworks.find((framework) => framework.value === value)
-                      ?.label
-                )
-                .join(', ')
-            : 'Selecione os sintomas'}
+          {selectedValues.length > 0 ? (
+            selectedValues
+              .map(
+                (value) => data.find((doenca) => doenca.label === value)?.label
+              )
+              .join(', ')
+          ) : (
+            <span className="text-neutral-300">Selecione os sintomas</span>
+          )}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
+      <PopoverContent className="p-0 mr-auto">
+        <Command className="mr-auto">
           <CommandInput placeholder="Buscar..." />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>Não há esta doença</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {data.map((doencas) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={() => handleSelect(framework.value)}
+                  key={doencas.value}
+                  value={doencas.value}
+                  onSelect={() => handleSelect(doencas.label)}
                 >
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      selectedValues.includes(framework.value)
+                      selectedValues.includes(doencas.value)
                         ? 'opacity-100'
                         : 'opacity-0'
                     )}
                   />
-                  {framework.label}
+                  {doencas.label}
                 </CommandItem>
               ))}
             </CommandGroup>

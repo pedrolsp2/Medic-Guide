@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,7 +21,6 @@ import Loader from '@/components/Loader';
 // Definindo o schema de validação com zod
 const newPatientSchema = z.object({
   name: z.string().min(1, 'O nome é obrigatório'),
-  age: z.number().min(0, 'A idade deve ser um número positivo'),
   sex: z.enum(['Masculino', 'Feminino']),
 });
 
@@ -33,6 +32,7 @@ interface NewPatientProps {
 }
 
 const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
+  const [date, setDate] = useState('');
   const {
     register,
     handleSubmit,
@@ -45,7 +45,8 @@ const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
   const { mutate, isPending } = useNovoPaciente();
 
   const onSubmit = (data: NewPatientFormValues) => {
-    mutate(data);
+    const age = date.replace(/-/g, '');
+    mutate({ ...data, age });
     reset();
   };
 
@@ -68,11 +69,11 @@ const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
           <div className="flex flex-col gap-1 mt-4">
             <Label htmlFor="age">Idade</Label>
             <Input
-              id="age"
-              type="number"
-              {...register('age', { valueAsNumber: true })}
+              required
+              value={date}
+              type="date"
+              onChange={(e) => setDate(e.target.value)}
             />
-            {errors.age && <p className="text-red-500">{errors.age.message}</p>}
           </div>
 
           <div className="flex flex-col gap-1 mt-4">

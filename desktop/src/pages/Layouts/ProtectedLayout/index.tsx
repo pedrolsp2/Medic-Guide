@@ -15,7 +15,7 @@ const ProtectedLayout = () => {
   }
 
   return (
-    <div className="w-full h-screen overflow-y-auto">
+    <div className="w-full overflow-y-auto">
       <Header />
       <Outlet />
     </div>
