@@ -6,6 +6,7 @@ import Home from '@/pages/Home';
 import PublicLayout from './pages/Layouts/PublicLayout';
 import NotFound from './pages/Layouts/NotFound';
 import Consultar from './pages/Consultar';
+import Patient from './pages/Patient';
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<Home />} />
             <Route path="/consultar" element={<Consultar />} />
+            <Route path="/pacientes" element={<Patient />} />
           </Route>
         </Route>
       </Routes>
