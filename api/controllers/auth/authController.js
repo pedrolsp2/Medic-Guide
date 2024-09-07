@@ -30,6 +30,7 @@ const login = async (req, res) => {
           NM_USUARIO: user.NM_USUARIO,
           EMAIL_USUARIO: user.EMAIL_USUARIO,
           DS_USUARIO: user.DS_USUARIO,
+          POLITICA: user.POLITICA,
         },
         process.env.SECRET,
         {
@@ -45,6 +46,7 @@ const login = async (req, res) => {
           NM_USUARIO: user.NM_USUARIO,
           EMAIL_USUARIO: user.EMAIL_USUARIO,
           DS_USUARIO: user.DS_USUARIO,
+          POLITICA: user.POLITICA,
         },
         token: token,
       });

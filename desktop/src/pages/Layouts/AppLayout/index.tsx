@@ -23,6 +23,7 @@ const AppLayout = () => {
         login({
           token: token,
           usuario: data.NM_USUARIO,
+          politica: data.POLITICA,
         });
       }
     },

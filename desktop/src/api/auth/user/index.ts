@@ -5,6 +5,7 @@ interface AuthenticateResponse {
   message: string;
   usuario: {
     SK_USUARIO: number;
+    POLITICA: number;
     NM_USUARIO: string;
     EMAIL_USUARIO: string;
     DS_USUARIO: string;
@@ -17,9 +18,18 @@ interface ValidateResponse {
   NM_USUARIO: string;
   EMAIL_USUARIO: string;
   DS_USUARIO: string;
+  POLITICA: number;
   iat: number;
   exp: number;
 }
+
+type NewUser = Omit<
+  ValidateResponse,
+  'SK_USUARIO' | 'iat' | 'exp' | 'POLITICA'
+> & {
+  SENHA_USUARIO: string;
+  POLITICA: '1' | '2';
+};
 
 export const authenticateUser = async (user: string, password: string) => {
   const response = await instance.post<AuthenticateResponse>(
@@ -66,4 +76,22 @@ export const changePassword = async (password: string) => {
   );
 
   return response.data;
+};
+
+export const newUser = async (props: NewUser) => {
+  const response = await instance.put(
+    '/user',
+    {
+      ...props,
+    },
+    { headers: getHeaders() }
+  );
+
+  return response.data;
+};
+
+export const getUsuario = async () => {
+  const response = await instance.get('/user');
+
+  return response.data as [];
 };

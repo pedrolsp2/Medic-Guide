@@ -3,7 +3,8 @@ var DAO = require('../../DAO/DAO');
 var { queryInsertSingle } = require('../../util/queryGen');
 
 async function createUser(req, res) {
-  const { NM_USUARIO, EMAIL_USUARIO, DS_USUARIO, SENHA_USUARIO } = req.body;
+  const { NM_USUARIO, EMAIL_USUARIO, DS_USUARIO, SENHA_USUARIO, POLITICA } =
+    req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(SENHA_USUARIO, 10);
@@ -13,6 +14,7 @@ async function createUser(req, res) {
         EMAIL_USUARIO,
         DS_USUARIO,
         SENHA_USUARIO: hashedPassword,
+        POLITICA,
       })} `;
     const response = await DAO.insert(query);
 
@@ -48,8 +50,31 @@ const listUser = async (req, res) => {
     });
   }
 };
+const listUsers = async (req, res) => {
+  try {
+    let query = /*SQL*/ `
+    SELECT US.SK_USUARIO,
+      US.EMAIL_USUARIO,
+      US.NM_USUARIO,
+      US.DS_USUARIO,
+      dp.ds_politica as POLITICA
+      FROM dim_usuario US INNER JOIN dim_politica dp on US.POLITICA = dp.id_politica where US.D_E_L_E_T IS NULL`;
+
+    const response = await DAO.select(query);
+    return response.status === 200
+      ? res.status(200).json(response.body)
+      : res.status(500).json({ message: 'Erro ao buscar' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   createUser,
   listUser,
+  listUsers,
 };

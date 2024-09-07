@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-
+import { PacienteType } from '@/types/Paciente';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
+import { UserPen } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
-import { useNovoPaciente } from './functions';
 import Loader from '@/components/Loader';
-import { Eye } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEditUser } from '../functions/useActionPatient';
+import { format, parse } from 'date-fns';
 
+interface EditPatientProps {
+  props: PacienteType;
+}
+
+type Sex = 'Masculino' | 'Feminino';
 // Definindo o schema de validação com zod
 const newPatientSchema = z.object({
   name: z.string().min(1, 'O nome é obrigatório'),
@@ -28,14 +35,12 @@ const newPatientSchema = z.object({
 
 type NewPatientFormValues = z.infer<typeof newPatientSchema>;
 
-interface NewPatientProps {
-  state: boolean;
-  setState: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const EditPatient: React.FC<EditPatientProps> = ({ props }) => {
+  const age = parse(props.age.toString(), 'yyyyMMdd', new Date());
+  const ageDate = format(age, 'yyyy-MM-dd');
 
-const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
-  const [date, setDate] = useState('');
-  const navigete = useNavigate();
+  const [date, setDate] = useState(ageDate);
+  const [open, setOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -44,22 +49,31 @@ const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
   } = useForm<NewPatientFormValues>({
     resolver: zodResolver(newPatientSchema),
   });
-
-  const { mutate, isPending } = useNovoPaciente();
+  const { mutate, isPending } = useEditUser({ setState: setOpen });
 
   const onSubmit = (data: NewPatientFormValues) => {
     const age = date.replace(/-/g, '');
-    mutate({ ...data, age });
+    mutate({ ...data, age, id: props.id });
     reset();
   };
 
+  useEffect(() => {
+    const sex = props.sex as Sex;
+    reset({ name: props.name, sex });
+  }, [props, reset]);
+
   return (
-    <Dialog open={state} onOpenChange={setState}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger title={`Editar ${props.name}`}>
+        <UserPen className="text-neutral-600" size={20} />
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Cadastro de paciente</DialogTitle>
+          <DialogTitle>Edição de paciente</DialogTitle>
+          <DialogDescription>
+            Edite as informações do paciente {props.name}
+          </DialogDescription>
         </DialogHeader>
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1 mt-4">
             <Label htmlFor="name">Nome</Label>
@@ -103,22 +117,11 @@ const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
           </div>
 
           <DialogFooter>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2"
-              onClick={() => {
-                navigete('/pacientes');
-                setState(false);
-              }}
-            >
-              <Eye size={18} />
-              Gerenciar
-            </Button>
             <DialogClose asChild>
-              <Button variant="destructive">Cancelar</Button>
+              <Button variant="outline">Cancelar</Button>
             </DialogClose>
             <Button type="submit">
-              <Loader condition={isPending} title="Cadastrar" />
+              <Loader condition={isPending} title="Alterar" />
             </Button>
           </DialogFooter>
         </form>
@@ -127,4 +130,4 @@ const NewPatient: React.FC<NewPatientProps> = ({ setState, state }) => {
   );
 };
 
-export default NewPatient;
+export default EditPatient;

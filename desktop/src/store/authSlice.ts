@@ -19,6 +19,7 @@ export type AuthSlice = AuthStore & AuthActions;
 const initialState: AuthStore = {
   token: null,
   usuario: null,
+  politica: 0,
   isAuthenticating: false,
 };
 

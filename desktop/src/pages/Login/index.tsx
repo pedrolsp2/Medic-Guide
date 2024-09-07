@@ -46,7 +46,11 @@ const Login = () => {
   } = useMutation({
     mutationFn: authenticateAsync,
     onSuccess: (data) => {
-      login({ token: data.token, usuario: data.usuario.NM_USUARIO });
+      login({
+        token: data.token,
+        usuario: data.usuario.NM_USUARIO,
+        politica: data.usuario.POLITICA,
+      });
       navigate(state?.path || '/');
     },
     onError: (err: AxiosError) => {

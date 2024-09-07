@@ -15,7 +15,12 @@ import {
 } from 'lucide-react';
 import NewPatient from '../Dialog/NewPatient';
 import { useNavigate } from 'react-router-dom';
+import { Store, useStoreBase } from '@/store';
+import NewUser from '../Dialog/NewUser';
 
+const stateSelector = (state: Store) => ({
+  politica: state.politica,
+});
 interface NavProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -25,6 +30,7 @@ interface SidenavType {
   Icon: LucideIcon;
   name: string;
   url?: string;
+  privilegio: number[];
 }
 
 const sidenavItens: SidenavType[] = [
@@ -32,41 +38,58 @@ const sidenavItens: SidenavType[] = [
     id: 1,
     Icon: UserRoundPlus,
     name: 'Cadastar paciente',
+    privilegio: [1, 2],
   },
   {
-    id: 2,
+    id: 3,
     Icon: ClipboardPlus,
     name: 'Consultar',
     url: '/consultar',
+    privilegio: [1],
+  },
+  {
+    id: 4,
+    Icon: Stethoscope,
+    name: 'Cadastar usuário',
+    privilegio: [1, 2],
   },
 ];
 
 const Nav: React.FC<NavProps> = ({ setState }) => {
+  const { politica } = useStoreBase(stateSelector);
   const [openPatient, setNewPatient] = useState(false);
+  const [openUser, setNewUser] = useState(false);
   const navigate = useNavigate();
 
-  const handleClick = (url?: string) => {
+  const handleClick = (id: number, url?: string) => {
     if (url) {
       navigate(url);
       setState(false);
     } else {
-      setNewPatient(true);
+      if (id === 1) {
+        setNewPatient(true);
+      } else {
+        setNewUser(true);
+      }
     }
   };
 
   return (
     <div className="flex flex-col">
       <NewPatient setState={setNewPatient} state={openPatient} />
-      {sidenavItens.map((nav) => (
-        <div
-          key={nav.id}
-          className="flex items-center w-full gap-2 p-2 rounded cursor-pointer hover:bg-neutral-50"
-          onClick={() => handleClick(nav.url)}
-        >
-          <nav.Icon className="text-primary-500" />
-          <span>{nav.name}</span>
-        </div>
-      ))}
+      <NewUser setState={setNewUser} state={openUser} />
+      {sidenavItens
+        .filter((item) => item.privilegio.includes(politica))
+        .map((nav) => (
+          <div
+            key={nav.id}
+            className="flex items-center w-full gap-2 p-2 rounded cursor-pointer hover:bg-neutral-50"
+            onClick={() => handleClick(nav.id, nav.url)}
+          >
+            <nav.Icon className="text-primary-500" />
+            <span>{nav.name}</span>
+          </div>
+        ))}
     </div>
   );
 };

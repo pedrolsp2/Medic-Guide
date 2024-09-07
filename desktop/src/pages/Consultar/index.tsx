@@ -11,6 +11,7 @@ import {
   sintomasTodoCorpo,
 } from './doencas';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const regioes_do_corpo = [
   {
@@ -43,22 +44,18 @@ const regioes_do_corpo = [
     slug: 'todoCorpo',
     data: sintomasTodoCorpo,
   },
-  {
-    label: 'Outros',
-    slug: 'outros',
-    data: [],
-  },
 ];
 
 const Consultar: React.FC = () => {
   const [selectID, setSelectID] = useState<number>(0);
   const [paciente, setPaciente] = useState<string>('');
+  const [outros, setOutros] = useState<string>('');
   const [doencas, setDoencas] = useState<string[]>([]);
 
   const itensPaciente = { selectID, setSelectID, setPaciente };
 
   const handleClick = () => {
-    console.log({ paciente, doencas });
+    console.log({ paciente, doencas, outros });
   };
 
   return (
@@ -86,6 +83,13 @@ const Consultar: React.FC = () => {
                 <Select data={item.data} setState={setDoencas} id={item.slug} />
               </div>
             ))}
+            <div className="flex flex-col gap-1">
+              <Label className="font-semibold text-primary-800">Outros</Label>
+              <Input
+                value={outros}
+                onChange={(e) => setOutros(e.target.value)}
+              />
+            </div>
           </div>
         </div>
         <Button onClick={handleClick} className="ml-auto w-fit">
@@ -94,7 +98,7 @@ const Consultar: React.FC = () => {
       </article>
       <article className="p-2">
         <strong className="text-xl">Diagnóstico</strong>
-        <span>{JSON.stringify({ paciente, doencas })}</span>
+        <span>{JSON.stringify({ paciente, doencas, outros })}</span>
       </article>
     </div>
   );

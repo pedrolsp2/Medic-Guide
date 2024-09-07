@@ -7,6 +7,7 @@ import PublicLayout from './pages/Layouts/PublicLayout';
 import NotFound from './pages/Layouts/NotFound';
 import Consultar from './pages/Consultar';
 import Patient from './pages/Patient';
+import Users from './pages/Users';
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
             <Route path="/" element={<Home />} />
             <Route path="/consultar" element={<Consultar />} />
             <Route path="/pacientes" element={<Patient />} />
+            <Route path="/usuarios" element={<Users />} />
           </Route>
         </Route>
       </Routes>
