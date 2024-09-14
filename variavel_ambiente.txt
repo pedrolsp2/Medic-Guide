@@ -1,0 +1,21 @@
+.env.development <========= API
+
+APP_ENV=dev
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=root 
+
+DB_NAME=medic_guide
+DB_BACCESS=medic_guide 
+DB_SOLUTIONS=medic_guide 
+PORT=3005
+
+SECRET=SALprojetoapi22022024
+API_ACCESS=http://localhost:3005/api
+
+API_KEY='AIzaSyDGOb7u_riDhk4mTrbjFASX9Rl-9D8MGxQ'
+
+.env.development <========= CLIENT
+VITE_BUSINESS_API_BASE_URL=http://localhost:3005/api
+
+VITE_VERSION=0.1
