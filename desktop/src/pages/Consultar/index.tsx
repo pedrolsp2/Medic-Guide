@@ -12,6 +12,9 @@ import {
 } from './doencas';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useConsultar } from './functions';
+import Loader from '@/components/Loader';
+import SplashLoading from '@/components/SplashLoading';
 
 const regioes_do_corpo = [
   {
@@ -46,17 +49,29 @@ const regioes_do_corpo = [
   },
 ];
 
+interface PacienteType {
+  id: number;
+  nome: string;
+}
+interface DoencaType {
+  id: string;
+  sintomas: string[];
+}
+
 const Consultar: React.FC = () => {
   const [selectID, setSelectID] = useState<number>(0);
-  const [paciente, setPaciente] = useState<string>('');
+  const [paciente, setPaciente] = useState<PacienteType>({} as PacienteType);
   const [outros, setOutros] = useState<string>('');
-  const [doencas, setDoencas] = useState<string[]>([]);
+  const [doencas, setDoencas] = useState<DoencaType[]>([]);
+  const [diagnostico, setDiagnostico] = useState('');
 
-  const itensPaciente = { selectID, setSelectID, setPaciente };
+  const { mutate, isPending } = useConsultar({ setDiagnostico });
 
   const handleClick = () => {
-    console.log({ paciente, doencas, outros });
+    mutate({ paciente, doencas, outros });
   };
+
+  const itensPaciente = { selectID, setSelectID, setPaciente };
 
   return (
     <div className="grid grid-cols-2 gap-4 py-4 h-container max-md:flex max-md:flex-col">
@@ -93,12 +108,19 @@ const Consultar: React.FC = () => {
           </div>
         </div>
         <Button onClick={handleClick} className="ml-auto w-fit">
-          Diagnosticar
+          <Loader condition={isPending} title="Diagnosticar" />
         </Button>
       </article>
-      <article className="p-2">
+      <article className="flex flex-col gap-4 p-2">
         <strong className="text-xl">Diagnóstico</strong>
-        <span>{JSON.stringify({ paciente, doencas, outros })}</span>
+        {isPending ? (
+          <div className="flex flex-col gap-1">
+            <span>Diagnosticando...</span>
+            <SplashLoading />
+          </div>
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: diagnostico }} />
+        )}
       </article>
     </div>
   );

@@ -14,7 +14,12 @@ import { differenceInYears, parse } from 'date-fns';
 interface PacienteProps {
   selectID: number;
   setSelectID: React.Dispatch<React.SetStateAction<number>>;
-  setPaciente: React.Dispatch<React.SetStateAction<string>>;
+  setPaciente: React.Dispatch<
+    React.SetStateAction<{
+      id: number;
+      nome: string;
+    }>
+  >;
 }
 
 const Paciente: React.FC<PacienteProps> = ({
@@ -32,12 +37,16 @@ const Paciente: React.FC<PacienteProps> = ({
   };
 
   const filterPaciente = (id: number) => {
-    return pacienteData.find((vlr) => vlr.id === id)?.name;
+    return pacienteData.find((vlr) => vlr.id === id);
   };
 
   const handleSelect = (paciente: string) => {
     setSelectID(Number(paciente));
-    setPaciente(filterPaciente(Number(paciente))!);
+    const pacienteFiltrado = filterPaciente(Number(paciente));
+    setPaciente({
+      id: pacienteFiltrado?.id || 0,
+      nome: pacienteFiltrado?.name || '',
+    });
   };
 
   useEffect(() => {

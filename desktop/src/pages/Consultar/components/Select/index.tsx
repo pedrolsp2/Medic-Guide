@@ -22,7 +22,14 @@ type SelectData = { label: string; value: string };
 
 interface SelectProps {
   data: SelectData[];
-  setState: React.Dispatch<React.SetStateAction<string[]>>;
+  setState: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: string;
+        sintomas: string[];
+      }[]
+    >
+  >;
   id: string;
 }
 

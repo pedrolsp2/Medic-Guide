@@ -59,8 +59,10 @@ function validate(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  let decoded = jwt_decode(req.headers['x-token']);
-  req.body.cod_usuario = decoded.usuario.cod_usuario;
+  const token = req.headers['x-token'];
+  const decoded = jwt_decode.verify(token, process.env.SECRET);
+  console.log(decoded);
+  req.body.SK_USUARIO = decoded.SK_USUARIO;
   next();
 }
 
