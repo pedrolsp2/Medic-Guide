@@ -21,7 +21,7 @@ module.exports = {
         container: 'calc(100vh - 60px)',
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['Lato', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

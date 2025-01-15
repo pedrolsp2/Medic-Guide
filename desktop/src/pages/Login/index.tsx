@@ -77,84 +77,97 @@ const Login = () => {
   };
 
   return (
-    <div className="grid items-center justify-center w-full h-screen">
-      <form
-        className="flex w-full flex-col gap-4 p-6 rounded border-primary-50/50 sm:w-[452px] border"
-        onSubmit={onFormSubmit}
-      >
-        <div className="flex items-center justify-center w-full gap-2 p-2">
-          <Stethoscope className="text-primary-500" /> Medic Guide
-        </div>
-        <div
-          className={`w-full rounded flex items-center border-b-2 py-1 bg-[#fafafa] px-2 ${
-            focusInputUser && 'border-b-primary-500'
-          } ${
-            isError ? 'border-b-red-500 bg-red-500/10' : 'border-b-primary-200'
-          } transition-all`}
-        >
-          <span className="flex items-center justify-center w-8 h-8">
-            <UserCircle2
-              className={`${
-                isError ? 'text-red-500' : 'text-primary-500'
-              } w-full h-full`}
-            />
-          </span>
-          <input
-            autoComplete="off"
-            id="user"
-            placeholder="Digite seu usuário"
-            className={` w-full rounded-md p-2 outline-none bg-transparent placeholder:text-primary-300`}
-            type="text"
-            ref={userRef}
-            onChange={(e) => setInputUser(e.target.value)}
-            onFocus={() => setFocusInputUser(!focusInputUser)}
-            onBlur={() => setFocusInputUser(!focusInputUser)}
-          />
-        </div>
-        <div
-          className={`w-full rounded flex items-center border-b-2 py-1 bg-[#fafafa] px-2 ${
-            focusInputPassword && 'border-b-primary-500'
-          } ${
-            isError ? 'border-b-red-500 bg-red-500/10' : 'border-b-primary-200'
-          } transition-all`}
-        >
-          <span className="flex items-center justify-center w-8 h-8">
-            <KeyRound
-              className={`${
-                isError ? 'text-red-500' : 'text-primary-500'
-              } w-full h-full`}
-            />
-          </span>
-          <div className="flex items-center w-full">
-            <input
-              id="password"
-              placeholder="Digite sua senha"
-              className="w-full p-2 bg-transparent rounded-md outline-none placeholder:text-primary-300"
-              type={passwordVisible ? 'text' : 'password'}
-              onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => setFocusInputPassword(!focusInputPassword)}
-              onBlur={() => setFocusInputPassword(!focusInputPassword)}
-            />
-            {passwordVisible ? (
-              <EyeOff
-                className="cursor-pointer hover:text-primary-200 text-primary-500"
-                onClick={() => setPasswordVisible((prev) => !prev)}
-                size={24}
-              />
-            ) : (
-              <Eye
-                className="cursor-pointer hover:text-gray-200"
-                onClick={() => setPasswordVisible((prev) => !prev)}
-                size={24}
-              />
-            )}
+    <div className="grid grid-cols-2">
+      <div className="w-full h-full bg-primary-500">
+        <div className="flex flex-col justify-between px-4 py-8">
+          <div className="flex items-center w-full gap-2 p-2 text-2xl text-white">
+            <Stethoscope /> Medic Guide
           </div>
         </div>
+      </div>
+      <div className="grid items-center justify-center w-full h-screen">
+        <form
+          className="flex w-full flex-col gap-4 p-6 rounded border-primary-50/50 sm:w-[452px] border"
+          onSubmit={onFormSubmit}
+        >
+          <div className="flex items-center justify-center w-full gap-2 p-2">
+            <Stethoscope className="text-primary-500" /> Medic Guide
+          </div>
+          <div
+            className={`w-full rounded flex items-center border-b-2 py-1 bg-[#fafafa] px-2 ${
+              focusInputUser && 'border-b-primary-500'
+            } ${
+              isError
+                ? 'border-b-red-500 bg-red-500/10'
+                : 'border-b-primary-200'
+            } transition-all`}
+          >
+            <span className="flex items-center justify-center w-8 h-8">
+              <UserCircle2
+                className={`${
+                  isError ? 'text-red-500' : 'text-primary-500'
+                } w-full h-full`}
+              />
+            </span>
+            <input
+              autoComplete="off"
+              id="user"
+              placeholder="Digite seu usuário"
+              className={` w-full rounded-md p-2 outline-none bg-transparent placeholder:text-primary-300`}
+              type="text"
+              ref={userRef}
+              onChange={(e) => setInputUser(e.target.value)}
+              onFocus={() => setFocusInputUser(!focusInputUser)}
+              onBlur={() => setFocusInputUser(!focusInputUser)}
+            />
+          </div>
+          <div
+            className={`w-full rounded flex items-center border-b-2 py-1 bg-[#fafafa] px-2 ${
+              focusInputPassword && 'border-b-primary-500'
+            } ${
+              isError
+                ? 'border-b-red-500 bg-red-500/10'
+                : 'border-b-primary-200'
+            } transition-all`}
+          >
+            <span className="flex items-center justify-center w-8 h-8">
+              <KeyRound
+                className={`${
+                  isError ? 'text-red-500' : 'text-primary-500'
+                } w-full h-full`}
+              />
+            </span>
+            <div className="flex items-center w-full">
+              <input
+                id="password"
+                placeholder="Digite sua senha"
+                className="w-full p-2 bg-transparent rounded-md outline-none placeholder:text-primary-300"
+                type={passwordVisible ? 'text' : 'password'}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setFocusInputPassword(!focusInputPassword)}
+                onBlur={() => setFocusInputPassword(!focusInputPassword)}
+              />
+              {passwordVisible ? (
+                <EyeOff
+                  className="cursor-pointer hover:text-primary-200 text-primary-500"
+                  onClick={() => setPasswordVisible((prev) => !prev)}
+                  size={24}
+                />
+              ) : (
+                <Eye
+                  className="cursor-pointer hover:text-gray-200"
+                  onClick={() => setPasswordVisible((prev) => !prev)}
+                  size={24}
+                />
+              )}
+            </div>
+          </div>
 
-        <Button className="mt-3 rounded-md md:py-3">
-          {isPending ? <Loader className="animate-spin" /> : 'Entrar'}
-        </Button>
-      </form>
+          <Button className="mt-3 md:py-3">
+            {isPending ? <Loader className="animate-spin" /> : 'Entrar'}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

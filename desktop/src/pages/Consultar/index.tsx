@@ -116,7 +116,6 @@ const Consultar: React.FC = () => {
         {isPending ? (
           <div className="flex flex-col gap-1">
             <span>Diagnosticando...</span>
-            <SplashLoading />
           </div>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: diagnostico }} />
